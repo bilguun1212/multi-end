@@ -4,26 +4,51 @@ import {
   ProfileImage,
   Success,
 } from "@/components/steps";
-import { useState } from "react";
+import { useState, useEffect } from "react"; 
 import { motion } from "framer-motion";
-
 
 const initialValues = {
   firstName: "",
   lastName: "",
+  userName: "", 
   email: "",
   phoneNumber: "",
   password: "",
   confirmPassword: "",
-  birthday: "",
+  birthDay: "", 
   profile: "",
 };
 
 const Home = () => {
+ 
   const [step, setStep] = useState(0);
 
-  const [formValues, setFormValues] = useState(initialValues);
-  const [formErrors, setFormErrors] = useState(initialValues);
+ 
+  const [formValues, setFormValues] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("formValues");
+      return saved ? JSON.parse(saved) : initialValues;
+    }
+    return initialValues;
+  });
+
+  const [formErrors, setFormErrors] = useState({});
+
+
+  useEffect(() => {
+    localStorage.setItem("formValues", JSON.stringify(formValues));
+  }, [formValues]);
+
+
+  useEffect(() => {
+    localStorage.setItem("currentStep", step);
+  }, [step]);
+
+
+  useEffect(() => {
+    const savedStep = localStorage.getItem("currentStep");
+    if (savedStep) setStep(parseInt(savedStep));
+  }, []);
 
   const totalSteps = 4;
 
@@ -49,7 +74,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f4f4f4] p-7 font-semibold">
-      <div className="bg-white flex gap-7 flex-col rounded-md w-120 text-center">
+      <div className="bg-white flex gap-7 flex-col rounded-md w-120 text-center shadow-lg">
         <Container
           totalSteps={totalSteps}
           step={step}

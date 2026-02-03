@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Header } from "@/components/layer/Header";
 import { validateStepThree } from "../utils/validators";
 import { Button } from "@/components/ui/Button";
-import { Image } from "lucide-react";
+import { Image, X } from "lucide-react"; 
 import { motion } from "framer-motion";
 import { animationVariant } from "@/constant/animation-variants";
 
@@ -10,7 +10,7 @@ export const ProfileImage = ({
   step,
   totalSteps,
   handlePrev,
-  handleClick,
+  handleClick,  
   formErrors,
   formValues,
   setFormValues,
@@ -22,9 +22,16 @@ export const ProfileImage = ({
 
   const handleBrowserClick = () => inputRef.current.click();
 
+ 
+  const removeImage = (e) => {
+    e.stopPropagation(); 
+    setImageUrl(null);
+    setFormValues((prev) => ({ ...prev, profile: "" }));
+    if (inputRef.current) inputRef.current.value = "";
+  };
+
   const handleChange = (event) => {
     const { name, value, files } = event.target;
-
     if (name === "birthDay") {
       setFormValues((prev) => ({ ...prev, [name]: value }));
       setFormErrors((prev) => ({ ...prev, [name]: "" }));
@@ -33,12 +40,10 @@ export const ProfileImage = ({
     }
   };
 
- 
   const handleDrop = (e) => {
     e.preventDefault(); 
     e.stopPropagation();
     setIsDragging(false);
-    
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       handleFile(e.dataTransfer.files[0]);
     }
@@ -73,7 +78,6 @@ export const ProfileImage = ({
     >
       <Header />
       
-  
       <div className="flex flex-col gap-3">
         <label className="text-sm font-semibold text-[#334155]">Date of birth *</label>
         <input
@@ -81,7 +85,6 @@ export const ProfileImage = ({
           name="birthDay"
           value={formValues.birthDay || ""}
           onChange={handleChange}
-    
           className={`border rounded-lg w-full h-11 p-3 outline-none transition-all ${
             formErrors.birthDay ? "border-red-500 ring-1 ring-red-500" : "border-[#cbd5e1]"
           }`}
@@ -89,7 +92,6 @@ export const ProfileImage = ({
         {formErrors.birthDay && <p className="text-red-500 text-xs">{formErrors.birthDay}</p>}
       </div>
 
- 
       <div className="flex flex-col gap-1">
         <label className="text-sm font-semibold text-[#334155]">Profile image *</label>
         <div
@@ -103,7 +105,17 @@ export const ProfileImage = ({
           }`}
         >
           {imageUrl ? (
-            <img src={imageUrl} className="w-full h-full object-cover rounded-md" alt="profile" />
+            <div className="relative w-full h-full">
+              <img src={imageUrl} className="w-full h-full object-cover rounded-md" alt="profile" />
+          
+              <button
+                onClick={removeImage}
+                className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-md hover:bg-red-50 transition-colors"
+                type="button"
+              >
+                <X className="w-4 h-4 text-red-500" />
+              </button>
+            </div>
           ) : (
             <div className="flex flex-col items-center">
               <div className="w-10 h-10 rounded-full flex justify-center items-center bg-white mb-2 shadow-sm">
