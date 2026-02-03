@@ -23,6 +23,7 @@ export const PrivateInfo = ({
     }
     handleClick();
   };
+
   return (
     <motion.div
       initial="enter"
@@ -30,41 +31,48 @@ export const PrivateInfo = ({
       exit="exit"
       variants={animationVariant}
       transition={{ duration: 0.5 }}
-      className="flex gap-3 flex-col p-7"
+      className="flex gap-3 flex-col p-7" 
     >
       <div>
         <Header />
       </div>
+      
+   
       <div className="flex flex-col gap-2 pt-7">
         <div className="flex gap-1 font-semibold text-sm text-[#334155]">
-          Frist Name <span className="text-[#E14942]">*</span>
+          First Name <span className="text-[#E14942]">*</span>
         </div>
         <input
-          className="flex pl-4 w-104 h-11 border-[1px] border-gray-100 rounded -md focus:outline-none focus:ring-gray-200 text-[#8B8E95] font-extralight"
+          className="flex pl-4 w-104 h-11 border-[1px] border-gray-100 rounded-md focus:outline-none focus:ring-gray-200 text-[#8B8E95] font-extralight"
           type="text"
-          name="fristName"
-          placeholder="Your frist name"
+          name="firstName" 
+          placeholder="Your first name"
+          value={formValues.firstName || ""}
           onChange={handleChange}
         />
         <p className="text-red-500 text-[14px] flex font-normal">
-          {formErrors.fristName}
+          {formErrors.firstName} 
         </p>
       </div>
-      <div className=" flex-col gap-2">
+
+      <div className="flex flex-col gap-2">
         <div className="flex gap-1 font-semibold text-sm text-[#334155]">
           Last Name <span className="text-[#E14942]">*</span>
         </div>
         <input
-          className="flex pl-4 w-104 h-11 border-[1px] border-gray-100 rounded -md focus:outline-none focus:ring-gray-200 text-[#8B8E95] font-extralight"
+          className="flex pl-4 w-104 h-11 border-[1px] border-gray-100 rounded-md focus:outline-none focus:ring-gray-200 text-[#8B8E95] font-extralight"
           type="text"
           name="lastName"
           placeholder="Your last name"
+          value={formValues.lastName || ""}
           onChange={handleChange}
         />
         <p className="text-red-500 text-[14px] flex font-normal">
           {formErrors.lastName}
         </p>
       </div>
+
+     
       <div className="flex flex-col gap-2">
         <div className="flex gap-1 font-semibold text-sm text-[#334155]">
           Username <span className="text-[#E14942]">*</span>
@@ -74,19 +82,20 @@ export const PrivateInfo = ({
           type="text"
           name="userName"
           placeholder="Your username"
+          value={formValues.userName || ""}
           onChange={handleChange}
         />
         <p className="text-red-500 text-[14px] flex font-normal">
           {formErrors.userName}
         </p>
       </div>
+
       <div>
         <Button
           totalSteps={totalSteps}
           step={step}
           handlePrev={handlePrev}
-          handleClick={handleClick}
-          handleSubmit={handleSubmit}
+          handleSubmit={handleSubmit} 
         />
       </div>
     </motion.div>
