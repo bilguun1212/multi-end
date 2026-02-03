@@ -4,26 +4,31 @@ import {
   ProfileImage,
   Success,
 } from "@/components/steps";
-import { useState, useEffect } from "react"; 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 
 const initialValues = {
   firstName: "",
   lastName: "",
-  userName: "", 
+  userName: "",
   email: "",
   phoneNumber: "",
   password: "",
   confirmPassword: "",
-  birthDay: "", 
+  birthDay: "",
   profile: "",
 };
 
 const Home = () => {
- 
-  const [step, setStep] = useState(0);
 
- 
+  const [step, setStep] = useState(() => {
+    if (typeof window !== "undefined") {
+      const savedStep = localStorage.getItem("currentStep");
+   
+      return savedStep ? parseInt(savedStep, 10) : 0;
+    }
+    return 0;
+  });
+
   const [formValues, setFormValues] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("formValues");
@@ -41,26 +46,21 @@ const Home = () => {
 
 
   useEffect(() => {
-    localStorage.setItem("currentStep", step);
+    localStorage.setItem("currentStep", step.toString());
   }, [step]);
 
-
-  useEffect(() => {
-    const savedStep = localStorage.getItem("currentStep");
-    if (savedStep) setStep(parseInt(savedStep));
-  }, []);
-
+ 
   const totalSteps = 4;
 
   const handleClick = () => {
     if (step < totalSteps - 1) {
-      setStep(step + 1);
+      setStep((prev) => prev + 1);
     }
   };
 
   const handlePrev = () => {
     if (step > 0) {
-      setStep(step - 1);
+      setStep((prev) => prev - 1);
     }
   };
 
